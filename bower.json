@@ -1,0 +1,20 @@
+{
+  "name": "firstnode",
+  "description": "",
+  "main": "",
+  "authors": [
+    "abockhorn <anchou.bockhorn@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/anchou-bockhorn/worktime",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.2.0"
+  }
+}
