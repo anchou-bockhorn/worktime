@@ -2,11 +2,12 @@ var express = require('express');
 var router = express.Router();
 
 /*
- * GET test.
+ * GET index.
  */
 router.get('/', function(req, res) {
     var db = req.db;
-    var collection = db.get('test');
+    var collection = db.get("userlist");
+
     collection.find({},{},function(e,docs){
         for (var i = 0, len = docs.length; i < len; i++) {
              res.json(docs[i].status);
@@ -27,7 +28,7 @@ router.get('/adduser', function(req, res) {
 
 router.post('/adduser', function(req, res) {
     var db = req.db;
-    var collection = db.get('test');
+    var collection = db.get("userlist");
     collection.insert(req.body, function(err, result){
         res.send(
             (err === null) ? { msg: '' } : { msg: err }
@@ -40,11 +41,9 @@ router.post('/adduser', function(req, res) {
 */
 router.put('/updateuser/:id/', function(req, res) {
 var db = req.db;
-var collection = db.get('firstnode');
-var userToUpdate = req.params.id;
 
 if (req.body.reason == 'status') {
-    db.collection('test').findAndModify({
+    db.collection('userlist').findAndModify({
         query: { _id: req.params.id },
         sort: {  },
         update: { '$set': { 'status': req.body.status } }
@@ -53,12 +52,11 @@ if (req.body.reason == 'status') {
     console.log(req.body);
     keyval = req.body.timestamp;
     key = req.body.timestamp_id;
-    var path = "timestamp."+key;
     var set = {};
     set['timestamp.'+key] = keyval;
-    db.collection('test').update({"_id":req.params.id},{$set: set })
-};
+    db.collection('userlist').update({"_id":req.params.id},{$set: set })
+}
 
 
-})
+});
 module.exports = router;
