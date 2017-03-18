@@ -19,12 +19,13 @@ router.get('/', function(req, res) {
 
 
 /*
- * POST to adduser.
+ * GET adduser.
  */
 router.get('/adduser', function(req, res) {
     res.render('adduser');            
 });
 
+// POST to adduser
 
 router.post('/adduser', function(req, res) {
     var db = req.db;
@@ -58,5 +59,13 @@ if (req.body.reason == 'status') {
 }
 
 
+});
+
+/*
+ *  DELETE to deleteuser
+ */
+router.delete('/deleteuser/:user', function (req,res) {
+    var db = req.db;
+    db.collection('userlist').remove({"username":req.params.user});
 });
 module.exports = router;

@@ -13,8 +13,6 @@ router.get('/userlist', function(req, res) {
 });
 
 
-
-
 /*
  * POST to adduser.
  */
@@ -34,7 +32,6 @@ router.post('/adduser', function(req, res) {
 router.put('/updateuser/:id/', function(req, res) {
 var db = req.db;
 var collection = db.get('firstnode');
-var userToUpdate = req.params.id;
 
 if (req.body.reason == 'status') {
     db.collection('userlist').findAndModify({
@@ -46,12 +43,11 @@ if (req.body.reason == 'status') {
     console.log(req.body);
     keyval = req.body.timestamp;
     key = req.body.timestamp_id;
-    var path = "timestamp."+key;
     var set = {};
     set['timestamp.'+key] = keyval;
     db.collection('userlist').update({"_id":req.params.id},{$set: set })
-};
+}
 
 
-})
+});
 module.exports = router;
