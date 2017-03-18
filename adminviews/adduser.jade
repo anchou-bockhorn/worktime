@@ -17,12 +17,23 @@ block content
     #form
         form(name='addUser', method="post" action="/admin/adduser")
             div.input
-                span.label username
-                input(type="text", name="username")
-                br
-                span.label full name
-                input(type="text", name="fullname")
-                span.label PIN
-                input(type="number", name="pin")
-                div.action
-                input(type="submit", value="add")
+                table
+                    tr
+                        td
+                            span.label username
+                        td
+                            input(type="text", name="username")
+                    tr
+                        td
+                            span.label full name
+                        td
+                            input(type="text", name="name")
+                    tr
+                        td
+                            span.label PIN
+                        td
+                            input(type="number", name="pin")
+                        td
+                            div.action
+                        td
+                            input(type="submit", value="add")
