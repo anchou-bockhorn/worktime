@@ -1,0 +1,41 @@
+extends layout
+
+block content
+    h1= title
+    p VagaTimeTracker
+    #wrapper    
+        // userInfo
+        #userInfo
+            h2 Info
+            p
+                strong User:
+                | <span id='userName'></span>
+                br
+                strong Name:
+                | <span id='userInfoName'></span>
+                br
+                strong Time:
+                | <span id='userInfoTime'></span>
+                br
+            #pin
+            h2 PIN:
+                fieldset
+                    input#inputPin(type='number', placeholder='0000')
+
+            h2 Timer
+            #timer
+                table
+                    tbody
+                        td
+                            button start
+                        td
+                            button stop
+
+        h2 User List
+        #userList
+            table
+                thead
+                    th username
+                    th full name
+                    th status
+                tbody

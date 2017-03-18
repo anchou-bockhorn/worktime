@@ -1,0 +1,28 @@
+extends layout
+
+block content
+    h1= title
+    p Administration
+    #wrapper    
+        h2 User List
+        #userList
+            table
+                thead
+                    th username
+                    th full name
+                    th status
+                    th sessions
+                tbody
+    
+    #form
+        form(name='addUser', method="post")
+            div.input
+                span.label username
+                input(type="text", name="username")
+                br
+                span.label full name
+                input(type="text", name="fullname")
+                span.label PIN
+                input(type="number", name="pin")
+                div.action
+                input(type="submit", value="add")
