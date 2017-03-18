@@ -67,5 +67,6 @@ if (req.body.reason == 'status') {
 router.delete('/deleteuser/:user', function (req,res) {
     var db = req.db;
     db.collection('userlist').remove({"username":req.params.user});
+    res.render('adduser');
 });
 module.exports = router;
