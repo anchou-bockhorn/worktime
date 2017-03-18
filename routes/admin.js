@@ -10,7 +10,7 @@ router.get('/', function(req, res) {
     collection.find({},{},function(e,docs){
         for (var i = 0, len = docs.length; i < len; i++) {
              res.json(docs[i].status);
-        })
+        }
     });
 });
 
