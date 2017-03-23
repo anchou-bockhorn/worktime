@@ -73,10 +73,8 @@ function fireTimer(text, userObj){
             alert("Already running!")
         }
         else {
-            console.log("User "+ userObj._id +" starting...");
-            stamp = +new Date();
-            console.log(stamp/1000);
             changeTimerState(userObj._id, 1);
+            createNewSession(userObj);
 }
     }
     
@@ -93,6 +91,24 @@ function fireTimer(text, userObj){
 }
 
 
+
+// create new session @param id
+
+function createNewSession(userObj){
+    timestamp = returnTimestamp();
+    console.log("User "+ userObj.name +" starting...");
+    date = new Date();
+    var reasons = {"date":date, "timestamp":timestamp, "reason":"session"};
+
+    $.ajax({
+        type: 'PUT',
+        data: reasons,
+        url: '/users/updateuser/'+id,
+        dataType: 'JSON'
+    }).done(function( response ) {
+        console.log(response.msg)
+    })
+}
 // set Timestamps in nested list
 
 function alterTimestamps(id, timestamp_id, timestamp){

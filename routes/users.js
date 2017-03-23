@@ -39,13 +39,15 @@ if (req.body.reason == 'status') {
         sort: {  },
         update: { '$set': { 'status': req.body.status } }
     })
-} else if (req.body.reason == 'timestamp') {
+} else if (req.body.reason == 'session') {
     console.log(req.body);
-    keyval = req.body.timestamp;
-    key = req.body.timestamp_id;
+    var timestamp = req.body.timestamp;
+    var date = req.body.date;
     var set = {};
-    set['timestamp.'+key] = keyval;
-    db.collection('userlist').update({"_id":req.params.id},{$set: set })
+    set['user_id'] = req.params.id;
+    set['timestamp'] = timestamp;
+    set['date'] = date;
+    db.collection('session').update({"user_id":req.params.id},{$set: set }, { upsert:true} );
 }
 
 
