@@ -35,7 +35,7 @@ function populateTable() {
         // Inject the whole content string into our existing HTML table
         $('#userList table tbody').html(tableContent);
     });
-};
+}
 
 // Fire That
 
@@ -55,10 +55,10 @@ function fireThat(event){
     user_pin = thisUserObject.pin;
     input_pin = $("input#inputPin").val();
     if (input_pin != user_pin){
-        alert("WRONG PIN MOTHERFUCKER!");
+        alert("Wrong PIN, Sir");
     }
     else {
-        fireTimer($(this).text(), thisUserObject)
+        fireTimer($(this).text(), thisUserObject);
         var stamp = Date.now() / 1000 | 0;
         alterTimestamps(thisUserObject._id, stamp, stamp);
     }
@@ -85,9 +85,10 @@ function fireTimer(text, userObj){
         else {
             console.log("User "+ userObj._id + " stopping...");
             changeTimerState(userObj._id, 0);
+            modifySession(getMostRecentSession(userObj), '');
         }
 
-    };
+    }
 }
 
 
@@ -124,7 +125,7 @@ function alterTimestamps(id, timestamp_id, timestamp){
     }
 
 
-// Start Timer (set status from 0 to 1)
+// Start / stop Timer (set status to 0 / 1)
 
 function changeTimerState(id, new_status){
     var that = {"status":new_status, "reason":"status"};
@@ -135,7 +136,7 @@ function changeTimerState(id, new_status){
             dataType: 'JSON'
         }).done(function( response ) {
         console.log(response.msg)
-        })
+        });
 location.reload();
 }
 
@@ -169,9 +170,7 @@ function showUserInfo(event) {
     //$('#userInfoGender').text(thisUserObject.gender);
     //$('#userInfoLocation').text(thisUserObject.location);
 
-};
-
-function returnTimestamp(){
+    function returnTimestamp(){
     stamp = Date.now() / 1000 | 0;
     return stamp;
 }
@@ -179,25 +178,18 @@ function returnTimestamp(){
 function addUser(user, full, pincode) {
     stamp = returnTimestamp();
     var newUser = {
-    username:user,
-    name:full,
-    pin:pincode,
-    status:0,
-    timestamp: {stamp:0}
-    }
+        username: user,
+        name: full,
+        pin: pincode,
+        status: 0,
+        timestamp: {stamp: 0}
+    };
     $.ajax({
-            type: 'POST',
-            data: newUser,
-            url: '/users/adduser',
-            dataType: 'JSON'
-        }).done(function(response){
+        type: 'POST',
+        data: newUser,
+        url: '/users/adduser',
+        dataType: 'JSON'
+    }).done(function (response) {
         console.log(response.msg)
-        })
-}
-
-function getStampsFromId(id){
-    $.getJSON( '/users/userlist', function( data ) {
-    console.log(data[0]);
-    console.log("id Param: "+id)
     })
-}
+}}

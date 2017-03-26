@@ -6,12 +6,12 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var moment = require('moment');
 // Database
-var mongo = require('mongodb');
 var monk = require('monk');
 var db = monk('localhost:27017/firstnode');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+var sessions = require('./routes/sessions');
 var app = express();
 
 // Make our db accessible to our router
@@ -36,7 +36,7 @@ app.use(express.static(path.join(__dirname, 'bower_components')));
 
 app.use('/', index);
 app.use('/users', users);
-
+app.use('/sessions', sessions);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
