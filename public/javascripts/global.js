@@ -85,7 +85,7 @@ function fireTimer(text, userObj){
         else {
             console.log("User "+ userObj._id + " stopping...");
             changeTimerState(userObj._id, 0);
-            modifySession(getMostRecentSession(userObj), '');
+            endRunningSession(userObj._id);
         }
 
     }
@@ -93,21 +93,53 @@ function fireTimer(text, userObj){
 
 
 
-// create new session @param id
+// create new session
 
 function createNewSession(userObj){
-    timestamp = returnTimestamp();
     console.log("User "+ userObj.name +" starting...");
-    date = new Date();
-    var reasons = {"date":date, "timestamp":timestamp, "reason":"session"};
-
     $.ajax({
-        type: 'PUT',
-        data: reasons,
-        url: '/users/updateuser/'+id,
+        type: 'POST',
+        data: '',
+        url: '/sessions/new/'+userObj._id,
         dataType: 'JSON'
     }).done(function( response ) {
         console.log(response.msg)
+    })
+
+}
+
+// end running session
+function endRunningSession(userId){
+    modifySession(userId, 0);
+    console.log('session_id: '+session_id);
+
+
+}
+// start = 1, end = 0
+function modifySession(userId, startOrEnd){
+    var sessionId;
+    $.ajax({
+        type: 'GET',
+        data: '',
+        url: '/sessions/active/'+userId,
+        dataType: 'JSON'
+    }).done(function( response ) {
+        sessionId = response[0]._id;
+        console.log(sessionId+ ' ending.');
+        if (startOrEnd == 0) {
+            $.ajax({
+                type: 'PUT',
+                data: '',
+                url: '/sessions/end/' + sessionId,
+                dataType: 'JSON'
+            }).done(function (res) {
+                console.log(res);
+
+            })
+        }
+        else if (startOrEnd == 1){
+            alert('Tried to start active session. 3RR0R');
+        }
     })
 }
 // set Timestamps in nested list
@@ -155,8 +187,9 @@ function showUserInfo(event) {
     var thisUserName = $(this).attr('rel');
 
     // Get Index of object based on id value
-    var arrayPosition = userListData.map(function(arrayItem) { return arrayItem.username; }).indexOf(thisUserName);
-
+    var arrayPosition = userListData.map(function (arrayItem) {
+        return arrayItem.username;
+    }).indexOf(thisUserName);
 
 
     // Get our User Object
@@ -170,26 +203,5 @@ function showUserInfo(event) {
     //$('#userInfoGender').text(thisUserObject.gender);
     //$('#userInfoLocation').text(thisUserObject.location);
 
-    function returnTimestamp(){
-    stamp = Date.now() / 1000 | 0;
-    return stamp;
-}
 
-function addUser(user, full, pincode) {
-    stamp = returnTimestamp();
-    var newUser = {
-        username: user,
-        name: full,
-        pin: pincode,
-        status: 0,
-        timestamp: {stamp: 0}
-    };
-    $.ajax({
-        type: 'POST',
-        data: newUser,
-        url: '/users/adduser',
-        dataType: 'JSON'
-    }).done(function (response) {
-        console.log(response.msg)
-    })
-}}
+}
