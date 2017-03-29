@@ -59,8 +59,6 @@ function fireThat(event){
     }
     else {
         fireTimer($(this).text(), thisUserObject);
-        var stamp = Date.now() / 1000 | 0;
-        alterTimestamps(thisUserObject._id, stamp, stamp);
     }
 }
 
@@ -142,19 +140,6 @@ function modifySession(userId, startOrEnd){
         }
     })
 }
-// set Timestamps in nested list
-
-function alterTimestamps(id, timestamp_id, timestamp){
-    var that = {"timestamp_id":timestamp_id, "timestamp":timestamp, "reason":"timestamp"};
-    $.ajax({
-            type: 'PUT',
-            data: that,
-            url: '/users/updateuser/'+id,
-            dataType: 'JSON'
-        }).done(function( response ) {
-        console.log(response.msg)
-        })
-    }
 
 
 // Start / stop Timer (set status to 0 / 1)
@@ -172,12 +157,7 @@ function changeTimerState(id, new_status){
 location.reload();
 }
 
-
-
 // Show User Info
-
-
-
 function showUserInfo(event) {
 
     // Prevent Link from Firing
@@ -191,17 +171,12 @@ function showUserInfo(event) {
         return arrayItem.username;
     }).indexOf(thisUserName);
 
-
     // Get our User Object
     var thisUserObject = userListData[arrayPosition];
-    //console.log(thisUserObject.currenttime);
 
     //Populate Info Box
     $('#userName').text(thisUserObject.username);
     $('#userInfoName').text(thisUserObject.name);
     $('#userInfoTime').text(thisUserObject.time);
-    //$('#userInfoGender').text(thisUserObject.gender);
-    //$('#userInfoLocation').text(thisUserObject.location);
-
 
 }
