@@ -2,24 +2,27 @@ var express = require('express');
 var router = express.Router();
 
 /*
- * GET index.
+ * GET json join.
  */
-router.get('/', function(req, res) {
+router.get('/all', function(req, res) {
     var db = req.db;
-    var collection = db.get("userlist");
+    var collection = db.get("sessions");
 
     collection.find({},{},function(e,docs){
-        for (var i = 0, len = docs.length; i < len; i++) {
-             res.json(docs[i].status);
-        }
+        res.json(docs);
     });
 });
 
-
+/*
+ * GET user info page
+ */
+router.get('/details', function(req, res) {
+    res.render('details');
+});
 
 
 /*
- * GET adduser.
+ * GET adduser page
  */
 router.get('/adduser', function(req, res) {
     res.render('adduser');            

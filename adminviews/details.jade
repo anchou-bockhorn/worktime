@@ -1,0 +1,54 @@
+extends layout
+
+block content
+    h1= title
+    p Details per user
+
+
+    h3 Starting date
+    select(id="start_day", name="sday")
+        -for(var i = 1;i<31;i++){
+        option(value="#{i}") #{i}
+        -}
+    select(id="start_month", name="smonth")
+        -for(var i = 1;i<12;i++){
+        option(value="#{i}") #{i}
+        -}
+    select(id="start_year", name="syear")
+        -for(var i = 2017;i<2024;i++){
+        option(value="#{i}") #{i}
+        -}
+
+    h3 Ending date
+    select(id="end_day", name="sday")
+        -for(var i = 1;i<31;i++){
+        option(value="#{i}") #{i}
+        -}
+    select(id="end_month", name="smonth")
+        -for(var i = 1;i<12;i++){
+        option(value="#{i}") #{i}
+        -}
+    select(id="end_year", name="syear")
+        -for(var i = 2017;i<2024;i++){
+        option(value="#{i}") #{i}
+        -}
+    br
+    br
+    button(id="render") Show
+
+    #wrapper
+        h2 User List
+        #userList
+            table
+                thead
+                    th username
+                    th full name
+                    th status
+                    th delete user
+                tbody
+
+    ul
+        li
+            a(href="/admin/adduser") Add User
+        li
+            a(href="/admin/showall") Show All

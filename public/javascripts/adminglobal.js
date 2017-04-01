@@ -5,9 +5,10 @@ var userListData = [];
 $(document).ready(function() {
 
     // Username link click
-    $('#userList table tbody').on('click', 'td a.linkshowuser', showUserInfo);
+    $('#userList table tbody').on('click', 'td a.linkuserdetails', showUserDetails);
     $('#timer table tbody td').on('click', 'button', fireThat);
     $('#userList table tbody').on('click', 'td a.linkdeleteuser', deleteUser);
+    $(document).on('click','button',renderDetails);
     // Populate the user table on initial page load
     populateTable();
 
@@ -27,7 +28,7 @@ function populateTable() {
         // For each item in our JSON, add a table row and cells to the content string
         $.each(data, function(){
             tableContent += '<tr>';
-            tableContent += '<td><a href="#" class="linkshowuser" rel="' + this.username + '">' + this.username + '</a></td>';
+            tableContent += '<td><a href="#" class="linkuserdetails" rel="' + this.username + '">' + this.username + '</a></td>';
             tableContent += '<td>' + this.name + '</td>';
             tableContent += '<td>' + this.status + '</td>';
             tableContent += '<td><a href="#" class="linkdeleteuser" rel="' + this.username + '">' + '[x]' + '</a></td>';
@@ -143,9 +144,9 @@ function deleteUser(event){
 
 }
 
-// Show User Info
+// Show User Details
 
-function showUserInfo(event) {
+function showUserDetails(event) {
 
     // Prevent Link from Firing
     event.preventDefault();
@@ -200,4 +201,7 @@ function getStampsFromId(id){
     console.log(data[0]);
     console.log("id Param: "+id)
     })
+}
+function renderDetails(){
+    console.log(this.parent);
 }
