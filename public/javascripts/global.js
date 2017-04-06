@@ -109,7 +109,7 @@ function createNewSession(userObj){
 // end running session
 function endRunningSession(userId){
     modifySession(userId, 0);
-    console.log('session_id: '+session_id);
+    console.log('session_id: '+session_id + ' ended.');
 
 
 }

@@ -26,6 +26,28 @@ router.get('/all', function(req, res) {
     });
 });
 
+/*
+ * POST session by date filter.
+ */
+router.post('/filter', function(req, res) {
+    var db = req.db;
+    var filterObj = req.body;
+    var collection = db.get('sessions');
+    var startFilter = new Date(filterObj.syear, filterObj.smonth-1, filterObj.sday);
+    var endFilter = new Date(filterObj.eyear, filterObj.emonth-1, filterObj.eday);
+    console.log(endFilter);
+    collection.find({
+        $and: [
+            {"date_started.dateObj_started": { $gte: new Date(startFilter) }},
+            {"date_ended.dateObj_ended":{$lte: new Date(endFilter)}}
+        ]
+    },{},function(e,docs){
+
+        console.log(docs);
+        res.json(docs);
+    });
+});
+
 
 /*
  *  POST for new session

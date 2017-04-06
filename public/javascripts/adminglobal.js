@@ -31,6 +31,7 @@ function populateTable() {
             tableContent += '<td><a href="#" class="linkuserdetails" rel="' + this.username + '">' + this.username + '</a></td>';
             tableContent += '<td>' + this.name + '</td>';
             tableContent += '<td>' + this.status + '</td>';
+            tableContent += '<td>' + '' + '</td>';
             tableContent += '<td><a href="#" class="linkdeleteuser" rel="' + this.username + '">' + '[x]' + '</a></td>';
             tableContent += '</tr>';
         });
@@ -38,7 +39,7 @@ function populateTable() {
         // Inject the whole content string into our existing HTML table
         $('#userList table tbody').html(tableContent);
     });
-};
+}
 
 // Fire That
 
@@ -61,7 +62,7 @@ function fireThat(event){
         alert("WRONG PIN MOTHERFUCKER!");
     }
     else {
-        fireTimer($(this).text(), thisUserObject)
+        fireTimer($(this).text(), thisUserObject);
         var stamp = Date.now() / 1000 | 0;
         alterTimestamps(thisUserObject._id, stamp, stamp);
     }
@@ -92,7 +93,7 @@ function fireTimer(text, userObj){
             changeTimerState(userObj._id, 0);
         }
 
-    };
+    }
 }
 
 
@@ -122,7 +123,7 @@ function changeTimerState(id, new_status){
             dataType: 'JSON'
         }).done(function( response ) {
         console.log(response.msg)
-        })
+        });
 location.reload();
 }
 
@@ -139,7 +140,7 @@ function deleteUser(event){
         dataType: 'JSON'
     }).done(function( response ) {
         console.log(response.msg)
-    })
+    });
     location.reload();
 
 }
@@ -170,7 +171,7 @@ function showUserDetails(event) {
     //$('#userInfoGender').text(thisUserObject.gender);
     //$('#userInfoLocation').text(thisUserObject.location);
 
-};
+}
 
 function returnTimestamp(){
     stamp = Date.now() / 1000 | 0;
@@ -185,7 +186,7 @@ function addUser(user, full, pincode) {
     pin:pincode,
     status:0,
     timestamp: {stamp:0}
-    }
+    };
     $.ajax({
             type: 'POST',
             data: newUser,
@@ -196,12 +197,65 @@ function addUser(user, full, pincode) {
         })
 }
 
-function getStampsFromId(id){
-    $.getJSON( '/users/userlist', function( data ) {
-    console.log(data[0]);
-    console.log("id Param: "+id)
+tion renderDetails(){
+    var queryObj = {};
+    queryObj.syear = $("#start_year").find(':selected').text();
+    queryObj.smonth = $("#start_month").find(':selected').text();
+    queryObj.sday = $("#start_day").find(':selected').text();
+
+    queryObj.eyear = $("#end_year").find(':selected').text();
+    queryObj.emonth = $("#end_month").find(':selected').text();
+    queryObj.eday = $("#end_day").find(':selected').text();
+
+
+    console.log(queryObj);
+    $.ajax({
+        type: 'POST',
+        data: queryObj,
+        url: '/sessions/filter',
+        dataType: 'JSON'
+    }).done(function(response){
+        fillSessionTable(response);
     })
 }
-function renderDetails(){
-    console.log(this.parent);
+
+function fillSessionTable(sessions) {
+
+    // Empty content string
+    var tableContent = '';
+
+    // jQuery AtJAX call for JSON
+    $.getJSON( '/users/userlist', function( data ) {
+        userListData = data;
+        // For each item in our JSON, add a table row and cells to the content string
+        $.each(data, function(){
+            var username = this.username;
+            var user_id = this._id;
+            var total_hours = 0;
+            var midnight_hours = 0;
+            $.each(sessions, function (i, v) {
+                if(v.userId == user_id){
+                    var date_diff = v.date_ended.timestamp_ended - v.date_started.timestamp_started;
+                    var seconds = date_diff/1000;
+                    var hours = seconds/3600;
+                    total_hours = hours;
+                    console.log('Found matching session for user: ' + username + ' with session id: ' + v._id);
+                    console.log('session '+ i + ': '+ hours + ' hours');
+                    console.log('------------');
+                }
+            })
+
+
+            tableContent += '<tr>';
+            tableContent += '<td><a href="#" class="linkuserdetails" rel="' + this.username + '">' + this.username + '</a></td>';
+            tableContent += '<td>' + this.name + '</td>';
+            tableContent += '<td>' + this.status + '</td>';
+            tableContent += '<td>' + total_hours + '</td>';
+            tableContent += '<td><a href="#" class="linkdeleteuser" rel="' + this.username + '">' + '[x]' + '</a></td>';
+            tableContent += '</tr>';
+        });
+
+        // Inject the whole content string into our existing HTML table
+        $('#userList table tbody').html(tableContent);
+    });
 }
