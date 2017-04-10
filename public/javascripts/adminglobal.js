@@ -197,7 +197,7 @@ function addUser(user, full, pincode) {
         })
 }
 
-tion renderDetails(){
+function renderDetails(){
     var queryObj = {};
     queryObj.syear = $("#start_year").find(':selected').text();
     queryObj.smonth = $("#start_month").find(':selected').text();

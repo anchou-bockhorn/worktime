@@ -84,6 +84,9 @@ function fireTimer(text, userObj){
             console.log("User "+ userObj._id + " stopping...");
             changeTimerState(userObj._id, 0);
             endRunningSession(userObj._id);
+	    $("#inputPin").val("");
+
+
         }
 
     }
@@ -102,6 +105,9 @@ function createNewSession(userObj){
         dataType: 'JSON'
     }).done(function( response ) {
         console.log(response.msg)
+	$("input#inputPin").val("");
+	location.reload();
+	
     })
 
 }
@@ -109,7 +115,7 @@ function createNewSession(userObj){
 // end running session
 function endRunningSession(userId){
     modifySession(userId, 0);
-    console.log('session_id: '+session_id + ' ended.');
+    //console.log('session_id: '+session_id + ' ended.');
 
 
 }
@@ -132,6 +138,7 @@ function modifySession(userId, startOrEnd){
                 dataType: 'JSON'
             }).done(function (res) {
                 console.log(res);
+		location.reload();
 
             })
         }
@@ -152,9 +159,9 @@ function changeTimerState(id, new_status){
             url: '/users/updateuser/'+id,
             dataType: 'JSON'
         }).done(function( response ) {
-        console.log(response.msg)
+        console.log(response.msg);
+	location.reload();
         });
-location.reload();
 }
 
 // Show User Info
