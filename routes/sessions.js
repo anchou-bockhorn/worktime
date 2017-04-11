@@ -88,6 +88,31 @@ router.post('/new/:userId', function(req, res) {
     });
 });
 
+
+/*
+ *  PUT to make lunch break
+ */
+router.put('/zmittag/:sid', function(req, res) {
+    var db = req.db;
+    var collection = db.get('sessions');
+    collection.update({
+            '_id':req.params.sid
+        },
+        {$inc:{zmittag:1}});
+})
+
+
+/*
+ *  PUT to smoke a zigi
+ */
+router.put('/zigi/:sid', function(req, res) {
+    var db = req.db;
+    var collection = db.get('sessions');
+    collection.update({
+        '_id':req.params.sid
+    },
+        {$inc:{zigi:1}});
+})
 /*
  *  PUT to end session
  */

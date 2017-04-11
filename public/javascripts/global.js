@@ -14,6 +14,7 @@ $(document).ready(function() {
 
 // Functions =============================================================
 
+
 // Fill table with data
 function populateTable() {
 
@@ -58,9 +59,20 @@ function fireThat(event){
         alert("Wrong PIN, Sir");
     }
     else {
-        fireTimer($(this).text(), thisUserObject);
+        var button_identifier = $(this).attr('id');
+        if (button_identifier == 'start' || button_identifier == 'stop'){
+            fireTimer(button_identifier, thisUserObject);
+        }
+        else if (button_identifier == 'zmittag'){
+            modifySession(thisUserObject._id, 3);
+        }
+        else if (button_identifier == 'zigi'){
+            modifySession(thisUserObject._id, 2);
+        }
     }
 }
+
+
 
 
 // Fire Timer
@@ -119,8 +131,8 @@ function endRunningSession(userId){
 
 
 }
-// start = 1, end = 0
-function modifySession(userId, startOrEnd){
+// end = 0,  start = 1, zigi = 2, zmittag = 3
+function modifySession(userId, reason){
     var sessionId;
     $.ajax({
         type: 'GET',
@@ -129,8 +141,8 @@ function modifySession(userId, startOrEnd){
         dataType: 'JSON'
     }).done(function( response ) {
         sessionId = response[0]._id;
-        console.log(sessionId+ ' ending.');
-        if (startOrEnd == 0) {
+        console.log(sessionId+ ' modified.');
+        if (reason == 0) {
             $.ajax({
                 type: 'PUT',
                 data: '',
@@ -142,12 +154,29 @@ function modifySession(userId, startOrEnd){
 
             })
         }
-        else if (startOrEnd == 1){
+        else if (reason == 1){
             alert('Tried to start active session. 3RR0R');
+        }
+        else if (reason == 2){
+            pause(sessionId, 'zigi');
+        }
+        else if (reason == 3){
+            pause(sessionId, 'zmittag');
         }
     })
 }
-
+// type is either 'zigi' or 'zmittag'
+function pause(sessionId, type){
+    $.ajax({
+        type: 'PUT',
+        data: '',
+        url: '/sessions/' + type + '/' + sessionId,
+        dataType: 'JSON'
+    }).done(function (res) {
+        console.log(res);
+        location.reload();
+    });
+}
 
 // Start / stop Timer (set status to 0 / 1)
 
