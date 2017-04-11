@@ -243,6 +243,7 @@ function fillSessionTable(sessions) {
                     console.log('session '+ i + ': '+ hours + ' hours');
                     console.log('------------');
                 }
+                total_hours = total_hours.toFixed(2);
             })
 
 
