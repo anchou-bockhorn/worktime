@@ -238,7 +238,7 @@ function fillSessionTable(sessions) {
                     var date_diff = v.date_ended.timestamp_ended - v.date_started.timestamp_started;
                     var seconds = date_diff/1000;
                     var hours = seconds/3600;
-                    total_hours = hours;
+                    total_hours += hours;
                     console.log('Found matching session for user: ' + username + ' with session id: ' + v._id);
                     console.log('session '+ i + ': '+ hours + ' hours');
                     console.log('------------');
